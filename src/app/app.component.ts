@@ -1,31 +1,42 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
-import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet, BrowserModule, FormsModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  public title: string = 'ai-finder-ext';
-
-  public searchQuery: string = '';
-  public searchResults: string = '';
-  resultCount: number = 0;
-
+  title = 'AI Finder Extension';
+  searchQuery: string = '';
+  searchResults: string = '';
+  pageData: string = '';
+  
   search() {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs: chrome.tabs.Tab[]) => {
       if (tabs.length > 0) {
-        chrome.tabs.sendMessage(tabs[0].id!, { action: 'search', query: this.searchQuery }, (response: any) => {
-          if (response) {
-            this.resultCount = response.count;
+        chrome.tabs.sendMessage(tabs[0].id!, { action: 'search', query: this.searchQuery }, (response) => {
+          if (chrome.runtime.lastError) {
+            console.error(chrome.runtime.lastError);
+          } else if (response) {
+            this.searchResults = `Znaleziono ${response.count} wyników dla "${this.searchQuery}"`;
           }
         });
       }
     });
   }
+  
+  getPageData() {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs: chrome.tabs.Tab[]) => {
+      if (tabs.length > 0) {
+        chrome.tabs.sendMessage(tabs[0].id!, { action: 'getData' }, (response) => {
+          if (chrome.runtime.lastError) {
+            console.error(chrome.runtime.lastError);
+          } else if (response) {
+            this.pageData = response.data;
+          }
+          console.log(response);
+        });
+      }
+    });
+  }  
 }

@@ -1,0 +1,49 @@
+.finder {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+
+    &__chat {
+        display: flex;
+        flex-direction: column;
+        width: auto;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__message {
+        margin-top: 1rem;
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        justify-content: center;
+    }
+}
+
+.chat {
+    &--user {
+        align-self: flex-end;
+        width: auto;
+    }
+
+    &--bot {
+        align-self: flex-start;
+        width: auto;
+    }
+}
+
+.message {
+    &__text {
+        margin-right: 1rem;
+
+        all: unset;
+        resize: none; /* Wyłącz możliwość zmiany rozmiaru */
+        overflow: hidden;
+        max-height: 10rem;
+    }
+
+    &__send {
+        align-self: flex-end;
+    }
+}

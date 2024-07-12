@@ -1,9 +1,12 @@
+console.log("Content script loaded");
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.action === "search") {
-        // Tutaj możemy dodać logikę wyszukiwania na stronie
-        console.log('Wyszukiwanie na stronie:', request.query);
-        // Przykład: znajdź wszystkie wystąpienia tekstu na stronie
-        const occurrences = document.body.innerText.match(new RegExp(request.query, 'gi'));
-        sendResponse({ count: occurrences ? occurrences.length : 0 });
-    }
+  console.log("Received message:", request);
+  if (request.action === "getData") {
+    sendResponse({ data: document.body.innerText });
+  } else if (request.action === "search") {
+    console.log('Wyszukiwanie na stronie:', request.query);
+    const occurrences = document.body.innerText.match(new RegExp(request.query, 'gi'));
+    sendResponse({ count: occurrences ? occurrences.length : 0 });
+  }
 });

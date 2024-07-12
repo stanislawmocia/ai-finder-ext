@@ -13,12 +13,15 @@
   },
   "action": {
     "default_popup": "index.html",
+    "default_icon": {
+      "128": "assets/icon128.png"
+    },
     "default_title": "AI Finder"
   },
   "commands": {
     "open-ai-search": {
       "suggested_key": {
-        "default": "Ctrl+Shift+F"
+        "default": "Ctrl+Shift+Y"
       },
       "description": "Open AI Finder"
     }
@@ -33,6 +36,10 @@
       ]
     }
   ],
+  "icons": {
+    "128": "assets/icon128.png"
+  },
+  
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'"
   }

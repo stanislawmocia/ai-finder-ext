@@ -1,5 +1,5 @@
 chrome.commands.onCommand.addListener((command) => {
-    if (command === "open-ai-search") {
-        chrome.action.openPopup();
-    }
+  if (command === "open-ai-search") {
+    chrome.action.openPopup();
+  }
 });

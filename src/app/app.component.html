@@ -1,9 +1,2 @@
-<div class="popup-container">
-  <h2>AI Search</h2>
-  <input [(ngModel)]="searchQuery" (keyup.enter)="search()" placeholder="Wyszukaj...">
-  <button (click)="search()">Szukaj</button>
-  <div *ngIf="searchResults">
-    <h3>Wyniki:</h3>
-    <p>{{ searchResults }}</p>
-  </div>
-</div>
+<app-navbar></app-navbar>
+<app-finder></app-finder>
