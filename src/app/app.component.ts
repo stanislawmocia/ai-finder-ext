@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SelectedTabEnum } from './selected-tab';
 
 @Component({
   selector: 'app-root',
@@ -6,8 +7,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'AI Finder Extension';
-  searchQuery: string = '';
-  searchResults: string = '';
-  pageData: string = '';
+  public selectedTab: SelectedTabEnum = SelectedTabEnum.SEARCH;
+  public SelectedTabEnum = SelectedTabEnum;
 }

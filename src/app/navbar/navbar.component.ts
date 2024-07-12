@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
+import { SelectedTabEnum } from '../selected-tab';
 
 @Component({
   selector: 'app-navbar',
@@ -11,5 +12,11 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent {
+  @Output() selectedTab: EventEmitter<SelectedTabEnum> = new EventEmitter<SelectedTabEnum>();
+  public SelectedTabEnum = SelectedTabEnum;
 
+
+  public select($event: MatButtonToggleChange) {
+    this.selectedTab.emit($event.value);
+  }
 }
