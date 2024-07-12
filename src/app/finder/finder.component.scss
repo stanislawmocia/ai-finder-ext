@@ -35,8 +35,6 @@
 
 .message {
     &__text {
-        margin-right: 1rem;
-
         all: unset;
         resize: none; /* Wyłącz możliwość zmiany rozmiaru */
         overflow: hidden;
@@ -45,5 +43,6 @@
 
     &__send {
         align-self: flex-end;
+        margin-left: auto;
     }
 }
