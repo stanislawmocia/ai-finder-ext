@@ -1,8 +1,19 @@
-/* You can add global styles to this file, and also import other style files */
 body {
     width: 300px;
-    height: auto;
+    height: 400px;
     margin: 0;
     padding: 10px;
     font-family: Arial, sans-serif;
+}
+
+.popup-container {
+    text-align: center;
+    padding: 20px;
+}
+
+input,
+button {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
 }
