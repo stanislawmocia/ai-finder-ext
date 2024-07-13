@@ -1,0 +1,34 @@
+<section class="finder">
+    <div class="finder__chat" #scrollContainer>
+        @for (message of finderMessages; track $index) {
+        @if (message.role === RoleEnum.USER) {
+        <mat-card class="chat--user" appearance="outlined">
+            <mat-card-content [innerText]="message.content"></mat-card-content>
+        </mat-card>
+        }
+
+        @if (message.role === RoleEnum.ASSISTANT) {
+        <mat-card class="chat--bot" appearance="outlined">
+            <mat-card-content [innerText]="message.content"></mat-card-content>
+        </mat-card>
+        }
+        }
+    </div>
+
+    <form [formGroup]="messageForm" (ngSubmit)="reply()">
+        <label for="message__textarea">
+            <button class="message__clear" mat-button color="primary" (click)="clearMessages()">
+                Clear messages
+            </button>
+            
+            <mat-card for="message__textarea" class="finder__message" appearance="outlined">
+                <textarea id="message__textarea" class="message__text" rows="1" placeholder="Ask a question..."
+                    formControlName="message" (keydown.enter)="reply()">
+                </textarea>
+                <button class="message__send" mat-mini-fab extended>
+                    <mat-icon>send</mat-icon>
+                </button>
+            </mat-card>
+        </label>
+    </form>
+</section>

@@ -3,26 +3,25 @@ import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterOutlet } from '@angular/router';
+import { FinderComponent } from '@components/finder/finder.component';
+import { NavbarComponent } from '@components/navbar/navbar.component';
+import { SettingsComponent } from '@components/settings/settings.component';
 import { AppComponent } from './app.component';
-import { FinderComponent } from './finder/finder.component';
-import { NavbarComponent } from './navbar/navbar.component';
-import { SettingsComponent } from './settings/settings.component';
-import { AutoExpandDirective } from './auto-expand.directive';
+import { AutoExpandDirective } from '@directive/auto-expand.directive';
+import { OpenAiService } from '@services/open-ai.service';
 
 @NgModule({
     declarations: [AppComponent, AutoExpandDirective],
-    imports: [RouterOutlet,
-        BrowserModule,
-        FormsModule,
-        MatCardModule,
+    imports: [
         NavbarComponent,
         FinderComponent,
         SettingsComponent,
+        BrowserModule,
+        FormsModule,
+        MatCardModule,
         BrowserAnimationsModule
     ],
     bootstrap: [AppComponent],
-    providers: [
-    ]
+    providers: [OpenAiService]
 })
 export class AppModule { }

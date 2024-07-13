@@ -5,6 +5,7 @@
   "compilerOptions": {
     "outDir": "./dist",
     "strict": true,
+    "baseUrl": "./",
     "rootDir": "./src",
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
@@ -25,7 +26,27 @@
     "lib": [
       "ES2022",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@components/*": [
+        "src/app/components/*"
+      ],
+      "@models/*": [
+        "src/app/models/*"
+      ],
+      "@enums/*": [
+        "src/app/enums/*"
+      ],
+      "@services/*": [
+        "src/app/services/*"
+      ],
+      "@directive/*": [
+        "src/app/directive/*"
+      ],
+      "@styles/*": [
+        "src/app/styles/*"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

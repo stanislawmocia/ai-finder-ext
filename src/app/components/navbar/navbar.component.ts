@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
-import { SelectedTabEnum } from '../selected-tab';
+import { SelectedTabEnum } from '@enums/selected-tab.enum';
 
 @Component({
   selector: 'app-navbar',

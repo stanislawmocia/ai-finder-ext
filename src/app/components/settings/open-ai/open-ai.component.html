@@ -1,0 +1,40 @@
+<form class="openai" [formGroup]="form">
+    <mat-form-field class="openai__input openai__input--api_key">
+        <mat-label>Api key</mat-label>
+        <input matNativeControl required formControlName="apiKey" type="text">
+    </mat-form-field>
+
+    <mat-form-field class="openai__select openai__select--model">
+        <mat-label>Model</mat-label>
+        <select matNativeControl required formControlName="model" [value]="form.get('model')?.value">
+            <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
+            <option value="gpt-4-turbo">gpt-4-turbo</option>
+            <option value="gpt-4o">gpt-4o</option>
+        </select>
+    </mat-form-field>
+
+    <mat-form-field class="openai__input openai__input--temperature">
+        <mat-label>Temperature</mat-label>
+        <input matNativeControl required formControlName="temperature" type="number">
+    </mat-form-field>
+
+    <mat-form-field class="openai__input openai__input--max_tokens">
+        <mat-label>Max tokens</mat-label>
+        <input matNativeControl required formControlName="max_tokens" type="number">
+    </mat-form-field>
+
+    <mat-form-field class="openai__input openai__input--top_p">
+        <mat-label>Top p</mat-label>
+        <input matNativeControl required formControlName="top_p" type="number">
+    </mat-form-field>
+
+    <mat-form-field class="openai__input openai__input--frequency_penalty">
+        <mat-label>Frequency penalty</mat-label>
+        <input matNativeControl required formControlName="frequency_penalty" type="number">
+    </mat-form-field>
+
+    <mat-form-field class="openai__input openai__input--presence_penalty">
+        <mat-label>Presence penalty</mat-label>
+        <input matNativeControl required formControlName="presence_penalty" type="number">
+    </mat-form-field>
+</form>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SelectedTabEnum } from './selected-tab';
+import { SelectedTabEnum } from '@enums/selected-tab.enum';
 
 @Component({
   selector: 'app-root',

@@ -1,0 +1,37 @@
+<section class="settings">
+    <!-- <mat-button-toggle-group class="settings__button-group" appearance="legacy" name="fontStyle" aria-label="Font Style">
+        <mat-button-toggle (change)="selectedAiServer = $event.value"
+            [checked]="selectedAiServer === AiServerEnum.OLLAMA" [value]="AiServerEnum.OLLAMA">
+            Ollama
+        </mat-button-toggle>
+        <mat-button-toggle (change)="selectedAiServer = $event.value"
+            [checked]="selectedAiServer === AiServerEnum.OPEN_AI" [value]="AiServerEnum.OPEN_AI">
+            OpenAI
+        </mat-button-toggle>
+        <mat-button-toggle (change)="selectedAiServer = $event.value"
+            [checked]="selectedAiServer === AiServerEnum.ANTHROPIC" [value]="AiServerEnum.ANTHROPIC">
+            Athropic
+        </mat-button-toggle>
+    </mat-button-toggle-group>
+
+    @switch (selectedAiServer) {
+    @case (AiServerEnum.OLLAMA) {
+    <app-ollama></app-ollama>
+    }
+    @case (AiServerEnum.OPEN_AI) { -->
+    <app-open-ai [clickSave]="clickSave"></app-open-ai>
+    <!-- }
+    @case (AiServerEnum.ANTHROPIC) {
+    <app-anthropic></app-anthropic>
+    }
+    } -->
+
+    <mat-form-field class="settings__prompt-configuration">
+        <mat-label>Prompt configuration</mat-label>
+        <textarea row="5" matInput placeholder="Prompt configuration" (change)="setPromptConfiguration($event)" [value]="promptConfiguration"></textarea>
+    </mat-form-field>
+
+    <button class="settings__save" (click)="save()" mat-flat-button>
+        Save
+    </button>
+</section>
