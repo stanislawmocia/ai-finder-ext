@@ -33,4 +33,8 @@
         <mat-label>Presence penalty</mat-label>
         <input matNativeControl required formControlName="presence_penalty" type="number">
     </mat-form-field>
+
+    <button class="settings__save" (click)="save()" mat-flat-button>
+        Save
+    </button>
 </form>

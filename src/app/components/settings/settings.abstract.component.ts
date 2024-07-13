@@ -6,5 +6,5 @@ import { LLMEnum } from "@enums/llm.enum";
 })
 export abstract class SettingsAbstractComponent {
     public abstract llmModelName: LLMEnum;
-    @Input() public clickSave: EventEmitter<void> = new EventEmitter<void>();
+    public abstract save(): void ;
 }

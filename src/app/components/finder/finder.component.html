@@ -1,5 +1,5 @@
 <section class="finder">
-    <div class="finder__chat" #scrollContainer>
+    <div id="finder__chat" class="finder__chat" #scrollContainer>
         @for (message of finderMessages; track $index) {
         @if (message.role === RoleEnum.USER) {
         <mat-card class="chat--user" appearance="outlined">

@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit } from '@angular/core';
-import { SettingsAbstractComponent } from '../settings.abstract.component';
+import { Component } from '@angular/core';
 import { LLMEnum } from '@enums/llm.enum';
+import { SettingsAbstractComponent } from '../settings.abstract.component';
 
 @Component({
   selector: 'app-ollama',
@@ -10,12 +10,9 @@ import { LLMEnum } from '@enums/llm.enum';
   templateUrl: './ollama.component.html',
   styleUrl: './ollama.component.scss'
 })
-export class OllamaComponent extends SettingsAbstractComponent implements OnInit {
+export class OllamaComponent extends SettingsAbstractComponent  {
   public override llmModelName: LLMEnum = LLMEnum.OLLAMA;
-  @Input() public override clickSave: EventEmitter<void> = new EventEmitter<void>();
 
-  public ngOnInit(): void {
-    this.clickSave.subscribe(() => {
-    });
+  public save(): void {
   }
 }

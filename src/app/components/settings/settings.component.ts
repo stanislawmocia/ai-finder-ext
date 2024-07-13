@@ -29,16 +29,9 @@ export class SettingsComponent {
   public LLMEnum = LLMEnum;
   public selectedAiServer: LLMEnum | null = null;
 
-  public clickSave: EventEmitter<void> = new EventEmitter<void>();
-
   constructor(private aiApiService: AiApiService) {
     this.aiApiService.getConfiguration();
     this.selectedAiServer = this.aiApiService.usedLLM;
-  }
-
-  public save() {
-    this.clickSave.emit();
-    this.aiApiService.saveConfiguration();
   }
 
   public setPromptConfiguration(event: any) {

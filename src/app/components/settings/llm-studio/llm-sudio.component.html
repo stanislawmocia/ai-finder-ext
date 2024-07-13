@@ -18,4 +18,8 @@
         <mat-label>Max tokens</mat-label>
         <input matNativeControl required formControlName="max_tokens" type="number">
     </mat-form-field>
+    
+    <button class="settings__save" (click)="save()" mat-flat-button>
+        Save
+    </button>
 </form>

@@ -85,7 +85,7 @@ export class AiApiService {
   }
 
   public completions(finderMessages: FinderModel[]): Observable<FinderModel | null> {
-    switch (this.usedLLM) {
+    switch (this._appConfiguration.useLLM) {
       case LLMEnum.OPEN_AI:
         return this.openAiService.completions(finderMessages, this._appConfiguration);
       case LLMEnum.LLM_STUDIO:

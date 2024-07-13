@@ -42,7 +42,7 @@ export class FinderComponent implements AfterViewChecked, OnInit, AfterViewInit 
 
   public ngOnInit(): void {
     document.addEventListener('input', function (event: any) {
-      if (event.target.tagName.toLowerCase() !== 'textarea') return;
+      if (event.target?.tagName?.toLowerCase() !== 'textarea') return;
       autoExpand(event.target);
     });
 

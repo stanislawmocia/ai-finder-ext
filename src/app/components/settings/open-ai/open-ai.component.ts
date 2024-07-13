@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -27,39 +27,37 @@ import { SettingsAbstractComponent } from '../settings.abstract.component';
   templateUrl: './open-ai.component.html',
   styleUrl: './open-ai.component.scss'
 })
-export class OpenAIComponent extends SettingsAbstractComponent implements OnInit {
+export class OpenAIComponent extends SettingsAbstractComponent {
   public llmModelName: LLMEnum = LLMEnum.OPEN_AI;
-  @Input() public override clickSave: EventEmitter<void> = new EventEmitter<void>();
-
   public form: FormGroup;
 
-  constructor(private aiService: AiApiService, private formBuilder: FormBuilder) {
+  constructor(private aiApiService: AiApiService, private formBuilder: FormBuilder) {
     super();
     this.form = this.formBuilder.group({
-      apiKey: this.aiService.usedLLM === LLMEnum.LLM_STUDIO ? this.aiService?.apiKey : '',
-      model: this.aiService.usedLLM === LLMEnum.LLM_STUDIO ? this.configuration?.model : '',
-      temperature: this.aiService.usedLLM === LLMEnum.LLM_STUDIO ? this.configuration?.temperature : 0.7,
-      max_tokens: this.aiService.usedLLM === LLMEnum.LLM_STUDIO ? this.configuration?.max_tokens : 1000,
-      top_p: this.aiService.usedLLM === LLMEnum.LLM_STUDIO ? this.configuration?.top_p : 1,
-      frequency_penalty: this.aiService.usedLLM === LLMEnum.LLM_STUDIO ? this.configuration?.frequency_penalty : 0,
-      presence_penalty: this.aiService.usedLLM === LLMEnum.LLM_STUDIO ? this.configuration?.presence_penalty : 0
+      apiKey: this.aiApiService.usedLLM === LLMEnum.LLM_STUDIO ? this.aiApiService?.apiKey : '',
+      model: this.aiApiService.usedLLM === LLMEnum.LLM_STUDIO ? this.configuration?.model : '',
+      temperature: this.aiApiService.usedLLM === LLMEnum.LLM_STUDIO ? this.configuration?.temperature : 0.7,
+      max_tokens: this.aiApiService.usedLLM === LLMEnum.LLM_STUDIO ? this.configuration?.max_tokens : 1000,
+      top_p: this.aiApiService.usedLLM === LLMEnum.LLM_STUDIO ? this.configuration?.top_p : 1,
+      frequency_penalty: this.aiApiService.usedLLM === LLMEnum.LLM_STUDIO ? this.configuration?.frequency_penalty : 0,
+      presence_penalty: this.aiApiService.usedLLM === LLMEnum.LLM_STUDIO ? this.configuration?.presence_penalty : 0
     });
   }
 
   public get configuration(): OpenAIModel {
-    return this.aiService.configuration as OpenAIModel;
+    return this.aiApiService.configuration as OpenAIModel;
   }
 
   public get apiKey(): OpenAIModel {
-    return this.aiService.configuration as OpenAIModel;
+    return this.aiApiService.configuration as OpenAIModel;
   }
 
-  public ngOnInit(): void {
-    this.clickSave.subscribe(() => {
-      let config = this.form.getRawValue();
-      this.aiService.apiKey = '' + config.apiKey;
-      delete config.apiKey;
-      this.aiService.configuration = config;
-    });
+  public save(): void {
+    this.aiApiService.usedLLM = LLMEnum.OPEN_AI;
+    let config = this.form.getRawValue();
+    this.aiApiService.apiKey = '' + config.apiKey;
+    delete config.apiKey;
+    this.aiApiService.configuration = config;
+    this.aiApiService.saveConfiguration();
   }
 }

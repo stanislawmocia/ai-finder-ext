@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -27,29 +27,28 @@ import { SettingsAbstractComponent } from '../settings.abstract.component';
   templateUrl: './llm-sudio.component.html',
   styleUrl: './llm-sudio.component.scss'
 })
-export class LlmStudioComponent extends SettingsAbstractComponent implements OnInit {
+export class LlmStudioComponent extends SettingsAbstractComponent {
   public llmModelName: LLMEnum = LLMEnum.LLM_STUDIO;
-  @Input() public override clickSave: EventEmitter<void> = new EventEmitter<void>();
   public form: FormGroup;
 
-  constructor(private aiService: AiApiService, private formBuilder: FormBuilder) {
+  constructor(private aiApiService: AiApiService, private formBuilder: FormBuilder) {
     super();
     this.form = this.formBuilder.group({
-      url: this.aiService.usedLLM === LLMEnum.LLM_STUDIO ? this.configuration?.url : '',
-      model: this.aiService.usedLLM === LLMEnum.LLM_STUDIO ? this.configuration?.model : '',
-      temperature: this.aiService.usedLLM === LLMEnum.LLM_STUDIO ? this.configuration?.temperature : 0.7,
-      max_tokens: this.aiService.usedLLM === LLMEnum.LLM_STUDIO ? this.configuration?.max_tokens : 1000,
+      url: this.aiApiService.usedLLM === LLMEnum.LLM_STUDIO ? this.configuration?.url : '',
+      model: this.aiApiService.usedLLM === LLMEnum.LLM_STUDIO ? this.configuration?.model : '',
+      temperature: this.aiApiService.usedLLM === LLMEnum.LLM_STUDIO ? this.configuration?.temperature : 0.7,
+      max_tokens: this.aiApiService.usedLLM === LLMEnum.LLM_STUDIO ? this.configuration?.max_tokens : 1000,
     });
   }
 
   public get configuration(): LlmStudioModel {
-    return this.aiService.configuration as LlmStudioModel;
+    return this.aiApiService.configuration as LlmStudioModel;
   }
 
-  public ngOnInit(): void {
-    this.clickSave.subscribe(() => {
-      let config: Omit<LlmStudioModel, 'url'> = this.form.getRawValue();
-      this.aiService.configuration = config;
-    });
+  public save(): void {
+    this.aiApiService.usedLLM = LLMEnum.LLM_STUDIO;
+    let config: Omit<LlmStudioModel, 'url'> = this.form.getRawValue();
+    this.aiApiService.configuration = config;
+    this.aiApiService.saveConfiguration();
   }
 }

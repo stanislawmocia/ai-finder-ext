@@ -17,25 +17,21 @@
         </mat-button-toggle>
     </mat-button-toggle-group>
 
-    @switch (selectedAiServer) {
-        <!-- @case (LLMEnum.OLLAMA) {
-            <app-ollama [clickSave]="clickSave"></app-ollama>
-        } -->
-        @case (LLMEnum.OPEN_AI) {
-            <app-open-ai [clickSave]="clickSave"></app-open-ai>
-        }
-        @case (LLMEnum.LLM_STUDIO) {
-            <app-llm-sudio [clickSave]="clickSave"></app-llm-sudio>
-        }
-    }
-
     <mat-form-field class="settings__prompt-configuration">
         <mat-label>Prompt configuration</mat-label>
         <textarea row="5" matInput placeholder="Prompt configuration" (change)="setPromptConfiguration($event)"
             [value]="promptConfiguration"></textarea>
     </mat-form-field>
 
-    <button class="settings__save" (click)="save()" mat-flat-button>
-        Save
-    </button>
+    @switch (selectedAiServer) {
+        <!-- @case (LLMEnum.OLLAMA) {
+            <app-ollama></app-ollama>
+        } -->
+        @case (LLMEnum.OPEN_AI) {
+            <app-open-ai></app-open-ai>
+        }
+        @case (LLMEnum.LLM_STUDIO) {
+            <app-llm-sudio></app-llm-sudio>
+        }
+    }
 </section>
