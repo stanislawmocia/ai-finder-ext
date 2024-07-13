@@ -29,7 +29,7 @@
         <label for="message__textarea">
             <mat-card for="message__textarea" class="finder__message" appearance="outlined">
                 <textarea id="message__textarea" class="message__text" rows="1" placeholder="Ask a question..."
-                    formControlName="message" (keydown.enter)="reply()">
+                    formControlName="message" (keydown.enter)="reply()" autofocus>
                 </textarea>
                 <button class="message__send" mat-mini-fab extended>
                     <mat-icon>send</mat-icon>
