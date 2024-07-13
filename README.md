@@ -19,5 +19,5 @@ Angular chrome extension to search AI related content on a webpage.
 4. Click on `Save` to save the configuration.
 
 # Screenshots
-![alt text](search.png)
+![alt text](first-page.png)
 ![alt text](settings.png)
