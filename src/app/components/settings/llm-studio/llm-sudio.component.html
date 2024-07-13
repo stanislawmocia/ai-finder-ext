@@ -1,0 +1,21 @@
+<form class="llm-studio" [formGroup]="form">
+    <mat-form-field class="llm-studio__input llm-studio__input--url">
+        <mat-label>Url</mat-label>
+        <input matNativeControl required formControlName="url" type="text">
+    </mat-form-field>
+
+    <mat-form-field class="llm-studio__input llm-studio__input--model">
+        <mat-label>model</mat-label>
+        <input matNativeControl required formControlName="model" type="text">
+    </mat-form-field>
+
+    <mat-form-field class="llm-studio__input llm-studio__input--temperature">
+        <mat-label>Temperature</mat-label>
+        <input matNativeControl required formControlName="temperature" type="number">
+    </mat-form-field>
+
+    <mat-form-field class="llm-studio__input llm-studio__input--max_tokens">
+        <mat-label>Max tokens</mat-label>
+        <input matNativeControl required formControlName="max_tokens" type="number">
+    </mat-form-field>
+</form>

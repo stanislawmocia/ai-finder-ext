@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -6,13 +7,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FinderComponent } from '@components/finder/finder.component';
 import { NavbarComponent } from '@components/navbar/navbar.component';
 import { SettingsComponent } from '@components/settings/settings.component';
-import { AppComponent } from './app.component';
 import { AutoExpandDirective } from '@directive/auto-expand.directive';
-import { OpenAiService } from '@services/open-ai.service';
+import { AiApiService } from '@services/ai-api.service';
+import { AppComponent } from './app.component';
 
 @NgModule({
     declarations: [AppComponent, AutoExpandDirective],
     imports: [
+        HttpClientModule,
         NavbarComponent,
         FinderComponent,
         SettingsComponent,
@@ -22,6 +24,6 @@ import { OpenAiService } from '@services/open-ai.service';
         BrowserAnimationsModule
     ],
     bootstrap: [AppComponent],
-    providers: [OpenAiService]
+    providers: [AiApiService]
 })
 export class AppModule { }

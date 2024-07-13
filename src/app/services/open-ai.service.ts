@@ -1,49 +1,15 @@
 import { Injectable } from '@angular/core';
-import { OpenAIModelEnum } from '@enums/openai.enum';
-import { FinderModel } from '@models/finder.model';
-import { OpenAIModel } from '@models/openAI.model';
+import { RoleEnum } from '@enums/role.enum';
+import { AppCofngiration, FinderModel } from '@models/finder.model';
 import OpenAI from "openai";
-import { AiApiService } from './ai-api.service';
-import { ChatCompletion, ChatCompletionMessageParam } from 'openai/resources/index.mjs';
-import { Observable } from 'rxjs';
+import { ChatCompletion, ChatCompletionCreateParamsNonStreaming, ChatCompletionMessageParam } from 'openai/resources/index.mjs';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OpenAiService {
-  private _configuration: OpenAIModel = {
-    model: OpenAIModelEnum.GPT35_TURBO,
-    messages: [],
-    temperature: 0.7,
-    max_tokens: 1000,
-    top_p: 1,
-    frequency_penalty: 0,
-    presence_penalty: 0
-  };
-  private openai!: OpenAI;
-
-  constructor(private aiApiService: AiApiService) {
-    chrome.storage?.local.get(['config'], (result: any)  => {
-      console.log('Retrieved configuration:', result);
-      if (result['config']) {
-        this._configuration = result['config'] as OpenAIModel;
-        this.openai = new OpenAI({ apiKey: this._configuration?.apiKey, dangerouslyAllowBrowser: true });
-      } else {
-        console.error('API key is not set');
-      }
-    });
-  }
-
-  public set configuration(config: OpenAIModel) {
-    chrome.storage?.local.set({ config: config }, function () {
-      console.log('Saved configuration');
-    });
-    this.openai = new OpenAI({ apiKey: config.apiKey, dangerouslyAllowBrowser: true });
-    this._configuration = config;
-  }
-
-  public get configuration(): OpenAIModel {
-    return this._configuration;
+  constructor() {
   }
 
   public parseMessages(messages: FinderModel[]): ChatCompletionMessageParam[] {
@@ -59,19 +25,21 @@ export class OpenAiService {
     return { ...response.choices[0].message };
   }
 
-  public completions(messages: FinderModel[]): Observable<FinderModel> {
-    return new Observable((observer) => {
-      this.openai.chat.completions.create({
-        ...this._configuration,
-        messages: this.parseMessages(messages)
-      }).then((response) => {
-        observer.next(this.parseCompletion(response));
-        observer.complete();
-        console.log(response);
-      }).catch((error) => {
-        observer.error(error);
-        console.error(error);
-      });
+  public completions(messages: FinderModel[], config: AppCofngiration): Observable<FinderModel> {
+    let observer = new Subject<FinderModel>();
+    let openai = new OpenAI({ apiKey: config.apiKey, dangerouslyAllowBrowser: true });
+
+    openai.chat.completions.create({
+      ...config.configuration as ChatCompletionCreateParamsNonStreaming,
+      messages: this.parseMessages(messages)
+    }).then((response) => {
+      observer.next(this.parseCompletion(response));
+      observer.complete();
+    }).catch((error) => {
+      observer.error({ content: error.error?.message, role: RoleEnum.ASSISTANT } as FinderModel);
+      console.error(error);
     });
+
+    return observer;
   }
 }

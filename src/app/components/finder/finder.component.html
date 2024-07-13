@@ -13,14 +13,20 @@
         </mat-card>
         }
         }
+
+        @if (waitingForResponse) {
+        <mat-card class="chat--waiting" appearance="outlined">
+            <mat-card-content class="waiting__content">
+                <div class="waiting__dot"></div>
+                <div class="waiting__dot"></div>
+                <div class="waiting__dot"></div>
+            </mat-card-content>
+        </mat-card>
+        }
     </div>
 
     <form [formGroup]="messageForm" (ngSubmit)="reply()">
         <label for="message__textarea">
-            <button class="message__clear" mat-button color="primary" (click)="clearMessages()">
-                Clear messages
-            </button>
-            
             <mat-card for="message__textarea" class="finder__message" appearance="outlined">
                 <textarea id="message__textarea" class="message__text" rows="1" placeholder="Ask a question..."
                     formControlName="message" (keydown.enter)="reply()">

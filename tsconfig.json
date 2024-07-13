@@ -58,7 +58,7 @@
     "src/**/*.ts",
     "src/content-script.js",
     "src/background.js"
-  ],
+, "src/app/models/.model.ts"  ],
   "files": [
     "src/declarations.d.ts"
   ]

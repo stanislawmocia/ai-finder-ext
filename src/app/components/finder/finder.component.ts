@@ -1,4 +1,4 @@
-import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { RoleEnum } from '@enums/role.enum';
 import { FinderModel } from '@models/finder.model';
 import { AiApiService } from '@services/ai-api.service';
-import { OpenAiService } from '@services/open-ai.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-finder',
@@ -24,16 +24,17 @@ import { OpenAiService } from '@services/open-ai.service';
   templateUrl: './finder.component.html',
   styleUrl: './finder.component.scss'
 })
-export class FinderComponent implements AfterViewChecked, OnInit {
+export class FinderComponent implements AfterViewChecked, OnInit, AfterViewInit {
   public messageForm: FormGroup;
   public RoleEnum = RoleEnum;
   @ViewChild('scrollContainer') private scrollContainer!: ElementRef;
+  public waitingForResponse: boolean = false;
 
   public get finderMessages(): FinderModel[] {
     return this.aiApiService.finderMessages;
   }
 
-  constructor(private fb: FormBuilder, private aiApiService: AiApiService, private openAiService: OpenAiService, private cdr: ChangeDetectorRef) {
+  constructor(private fb: FormBuilder, private aiApiService: AiApiService, private cdr: ChangeDetectorRef) {
     this.messageForm = this.fb.group({
       message: ['', [Validators.required, Validators.minLength(1)]]
     });
@@ -53,38 +54,41 @@ export class FinderComponent implements AfterViewChecked, OnInit {
     document.querySelectorAll('message__textarea').forEach(autoExpand);
   }
 
+  public ngAfterViewInit(): void {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs: chrome.tabs.Tab[]) => {
+      if (tabs.length > 0) {
+        chrome.tabs.sendMessage(tabs[0].id!, { action: 'search' }, (response) => {
+          if (chrome.runtime.lastError) {
+          } else if (response) {
+            if (this.finderMessages.length === 0) {
+              this.aiApiService.addMessage({ role: RoleEnum.SYSTEM, content: this.aiApiService.promptConfiguration?.replace('${page_content}', response.content) })
+            }
+          }
+        });
+      }
+    })
+  }
+
   public ngAfterViewChecked(): void {
     this.scrollToBottom();
   }
 
-  public clearMessages(): void {
-    this.aiApiService.clearMessages();
-  }
-
   public reply() {
+    this.waitingForResponse = true;
     const messageValue: string = this.messageForm.get('message')?.value;
 
     if (messageValue.length === 0) return;
 
-
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs: chrome.tabs.Tab[]) => {
-      if (tabs.length > 0) {
-        chrome.tabs.sendMessage(tabs[0].id!, { action: 'search', query: messageValue }, (response) => {
-          if (chrome.runtime.lastError) {
-            console.error(chrome.runtime.lastError);
-          } else if (response) {
-            console.log('Response:', response);
-
-            this.aiApiService.addMessage({ role: RoleEnum.USER, content: this.aiApiService.promptConfiguration.replace('${message}', messageValue).replace('${page_content}', response.content) });
-            this.messageForm.reset();
-
-            this.openAiService.completions(this.finderMessages).subscribe((response) => {
-              this.aiApiService.addMessage({ content: response.content?.replaceAll('\\n', '</br>'), role: response.role } as FinderModel);
-              this.cdr.detectChanges();
-            });
-          }
-        });
-      }
+    this.aiApiService.addMessage({ role: RoleEnum.USER, content: messageValue });
+    this.messageForm?.get('message')?.reset();
+    this.aiApiService.completions(this.finderMessages).pipe(filter(response => response !== null)).subscribe((response: FinderModel) => {
+      this.aiApiService.addMessage({ content: response.content, role: response.role } as FinderModel);
+      this.cdr.detectChanges();
+      this.waitingForResponse = false;
+    }, (error) => {
+      this.aiApiService.addMessage({ content: String(error.error?.message), role: RoleEnum.ASSISTANT } as FinderModel);
+      this.cdr.detectChanges();
+      this.waitingForResponse = false;
     });
   }
 

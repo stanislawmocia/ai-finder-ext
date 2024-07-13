@@ -1,13 +1,4 @@
 <app-navbar (selectedTab)="selectedTab = $event"></app-navbar>
 
-@switch (selectedTab) {
-  @case (SelectedTabEnum.SEARCH) {
-    <app-finder></app-finder>
-  }
-  @case (SelectedTabEnum.SETTINGS) {
-    <app-settings></app-settings>
-  }
-  @default {
-    <app-finder></app-finder>
-  }
-}
+<app-finder [hidden]="selectedTab !== SelectedTabEnum.SEARCH"></app-finder>
+<app-settings [hidden]="selectedTab !== SelectedTabEnum.SETTINGS"></app-settings>

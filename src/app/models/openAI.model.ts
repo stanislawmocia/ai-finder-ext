@@ -2,7 +2,6 @@ import { OpenAIModelEnum } from "@enums/openai.enum";
 import { FinderModel } from "./finder.model";
 
 export interface OpenAIModel {
-    apiKey?: string;
     model: OpenAIModelEnum;
     messages?: FinderModel[];
     temperature: number;
